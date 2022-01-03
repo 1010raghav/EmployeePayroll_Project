@@ -12,11 +12,6 @@ namespace EmployeeManager.Interface
         string Login(LoginModel loginDetails);
         string ResetPassword(ResetPasswordModel reset);
         string ForgetPassword(string Email);
-        
-
-        
-
-        
 
 
     }

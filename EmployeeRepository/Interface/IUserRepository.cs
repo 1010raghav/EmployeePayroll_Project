@@ -15,3 +15,4 @@ namespace EmployeeRepository.Interface
         string ForgetPassword(string Email);
     }
 }
+

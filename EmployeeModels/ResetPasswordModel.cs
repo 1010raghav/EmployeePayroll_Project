@@ -12,5 +12,6 @@ namespace EmployeeModels
 
         [Required]
         public string NewPassword { get; set; }
+
     }
 }

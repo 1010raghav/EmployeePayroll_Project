@@ -17,6 +17,8 @@ namespace EmployeeNote.Controller
             this.manager = manager;
         }
 
+
+
         [HttpPost]
         [Route("api/register")]
         public IActionResult Register([FromBody] RegisterModel user)

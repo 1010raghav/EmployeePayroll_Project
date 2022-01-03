@@ -24,6 +24,7 @@ namespace EmployeeRepository.Repository
             this.configuration = configuration;
         }
 
+
         public string Register(RegisterModel user)
         {
             try

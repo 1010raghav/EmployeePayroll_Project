@@ -122,6 +122,8 @@ namespace EmployeeNote
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+
             //app.UseSwagger();
             //app.UseSwaggerUI(c =>
             //{

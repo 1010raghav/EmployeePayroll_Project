@@ -16,6 +16,7 @@ namespace EmployeeManager.Manager
         }
 
 
+
         public string Register(RegisterModel user)
         {
             try
