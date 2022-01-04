@@ -9,7 +9,7 @@ namespace EmployeeRepository.Interface
 {
     public interface IUserRepository
     {
-        string Register(RegisterModel user);
+       RegisterModel Register(RegisterModel user);
         string Login(LoginModel loginDetails);
         string ResetPassword(ResetPasswordModel reset);
         string ForgetPassword(string Email);

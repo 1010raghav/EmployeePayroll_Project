@@ -25,7 +25,7 @@ namespace EmployeeRepository.Repository
         }
 
 
-        public string Register(RegisterModel user)
+        public RegisterModel Register(RegisterModel user)
         {
             try
             {
@@ -34,10 +34,10 @@ namespace EmployeeRepository.Repository
                 {
                     this.context.User.Add(user);
                     this.context.SaveChanges();
-                    return "Register Successfully";
+                    return user;
 
                 }
-                return "Email already exist";
+                return null;
             }
             catch (ArgumentException ex)
             {

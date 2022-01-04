@@ -25,20 +25,20 @@ namespace EmployeeNote.Controller
         {
             try
             {
-                string message = this.manager.Register(user);
-                if (message.Equals("Register Successfully"))
+                var message = this.manager.Register(user);
+                if (message != null )
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Registration is Successfull", Data = message.ToString()});
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Registration is Not Successfull"});
                 }
 
             }
             catch (Exception ex)
             {
-                return this.NotFound(new { Status = false, Message = ex.Message });
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
 
@@ -52,19 +52,19 @@ namespace EmployeeNote.Controller
         {
             try
             {
-                string message = this.manager.Login(loginDetails);
-                if (message.Equals("Login Successful"))
+                var message = this.manager.Login(loginDetails);
+                if (message.Equals(true))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string> { Status = true, Message = "Login Successful" });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string> { Status = false, Message = "Login Unsuccessful" });
                 }
             }
             catch (Exception ex)
             {
-                return this.NotFound(new { Status = false, ex.Message });
+                return this.NotFound(new ResponseModel<string> { Status = false, Message= ex.Message });
             }
         }
 
@@ -74,19 +74,19 @@ namespace EmployeeNote.Controller
         {
             try
             {
-                string message = this.manager.ResetPassword(reset);
+                var message = this.manager.ResetPassword(reset);
                 if (message.Equals(true))
                 {
-                    return this.Ok(new { Status = true, Message = "Reset Successful" });
+                    return this.Ok(new ResponseModel<string> { Status = true, Message = "Reset Successful" });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = "Reset Unsuccessful" });
+                    return this.BadRequest(new ResponseModel<string> { Status = false, Message = "Reset Unsuccessful" });
                 }
             }
             catch (Exception ex)
             {
-                return this.NotFound(new { Status = false, ex.Message });
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
 
@@ -98,24 +98,24 @@ namespace EmployeeNote.Controller
         {
             try
             {
-                string message = this.manager.ForgetPassword(Email);
+                var message = this.manager.ForgetPassword(Email);
 
 
-                if (message.Equals("Reset Link Sent to Your Email Successfully"))
+                if (message.Equals(true))
                 {
 
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string> { Status = true, Message = "Reset Link Sent to Your Email Successfully" });
                 }
                 else
                 {
 
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string> { Status = false, Message = "Error in sending the Email" });
                 }
             }
             catch (Exception ex)
             {
 
-                return this.NotFound(new { Status = false, ex.Message });
+                return this.NotFound(new ResponseModel<string> { Status = false, Message= ex.Message });
             }
         }
 

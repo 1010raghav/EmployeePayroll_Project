@@ -7,7 +7,7 @@ using System.Text;
 
 namespace EmployeeManager.Manager
 {
-   public class EmpManager:IEmpManager
+    public class EmpManager : IEmpManager
     {
         readonly IEmpRepository Emprepository;
         public EmpManager(IEmpRepository Emprepository)
@@ -16,7 +16,7 @@ namespace EmployeeManager.Manager
         }
 
 
-        public string AddEmployeeDetails(EmployeeDetails employeeDetails)
+        public EmployeeDetails AddEmployeeDetails(EmployeeDetails employeeDetails)
         {
             try
             {
@@ -29,7 +29,7 @@ namespace EmployeeManager.Manager
         }
 
 
-        public string Delete(string deleteData)
+        public EmployeeDetails Delete(string deleteData)
         {
             try
             {
@@ -41,14 +41,16 @@ namespace EmployeeManager.Manager
             }
         }
 
-        public string Edit(string edit)
+        public EmployeeDetails Edit(string edit, string gender, string department, int salary, int startDate)
         {
-            throw new NotImplementedException();
-        }
-
-        public string Edit(string edit, string gender, string department, int salary, int startDate)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                return this.Emprepository.Edit(edit,gender,department,salary,startDate);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

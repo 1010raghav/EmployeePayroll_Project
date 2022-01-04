@@ -27,22 +27,24 @@ namespace EmployeeNote.Controller
         {
             try
             {
-                string message = this.manager.AddEmployeeDetails(EmployeeDetails);
-                if (message.Equals("Employee Details Added Successfully"))
+                var message = this.manager.AddEmployeeDetails(EmployeeDetails);
+                if (message.Equals(true))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string> { Status = true, Message = "Employee Details Added Successfully", Data = message.ToString() });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string> { Status = false, Message = "Employee Details Are NOT Added" });
                 }
             }
             catch (Exception ex)
             {
-                return this.NotFound(new { Status = false, ex.Message });
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
 
+        
+        
 
         [HttpDelete]
         [Route("api/deleteData")]
@@ -50,19 +52,19 @@ namespace EmployeeNote.Controller
         {
             try
             {
-                string message = this.manager.Delete(deleteData);
-                if (message.Equals("Data Deleted Successfully"))
+                var message = this.manager.Delete(deleteData);
+                if (message.Equals(true))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string> { Status = true, Message = "Data Deleted Successfully", Data = message.ToString() });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string> { Status = false, Message = "Data Delete Unsuccessful" });
                 }
             }
             catch (Exception ex)
             {
-                return this.NotFound(new { Status = false, ex.Message });
+                return this.NotFound(new ResponseModel<string> { Status = false, Message=ex.Message });
             }
         }
 
@@ -73,19 +75,19 @@ namespace EmployeeNote.Controller
         {
             try
             {
-                string message = this.manager.Edit(FullName, Gender, Department, Salary, StartDate);
-                if (message.Equals("Information Edited Successfully"))
+                var message = this.manager.Edit(FullName, Gender, Department, Salary, StartDate);
+                if (message.Equals(true))
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<string> { Status = true, Message = "Information Edited Successfully", Data= message.ToString() });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string> { Status = false, Message = "Error Information Editing UnSuccessful" });
                 }
             }
             catch (Exception ex)
             {
-                return this.NotFound(new { Status = false, ex.Message });
+                return this.NotFound(new ResponseModel<string> { Status = false, Message=ex.Message });
             }
         }
 

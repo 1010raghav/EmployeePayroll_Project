@@ -7,11 +7,11 @@ namespace EmployeeManager.Interface
 {
     public interface IEmpManager
     {
-        string AddEmployeeDetails(EmployeeDetails employeeDetails);
+        EmployeeDetails AddEmployeeDetails(EmployeeDetails employeeDetails);
 
-        string Delete(string deleteData);
+        EmployeeDetails Delete(string deleteData);
 
-        string Edit(string edit, string gender, string department, int salary, int startDate);
+        EmployeeDetails Edit(string edit, string gender, string department, int salary, int startDate);
 
 
 

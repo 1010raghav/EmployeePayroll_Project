@@ -17,18 +17,18 @@ namespace EmployeeRepository.Repository
             this.context = context;
         }
 
-        public string AddEmployeeDetails(EmployeeDetails employeeDetails)
+        public EmployeeDetails AddEmployeeDetails(EmployeeDetails employeeDetails)
         {
             try
             {
-                var ifEmployeeDetails = this.context.Detail.Where(x => x.FullName == employeeDetails.FullName).SingleOrDefault();
+                var ifEmployeeDetails = this.context.Detail.Where(x => x.FullName == employeeDetails.FullName).SingleOrDefault();     //query
                 if (ifEmployeeDetails == null)
                 {
                     this.context.Detail.Add(employeeDetails);
                     this.context.SaveChanges();
-                    return "Employee Details is Added Successfully "; 
+                    return employeeDetails;                          //object
                 }
-                return "Error : Employee Details Not Added";
+                return null;                                         //object
             }
             catch (ArgumentException ex)
             {
@@ -36,18 +36,18 @@ namespace EmployeeRepository.Repository
             }
         }
 
-        public string Delete(string FullName)
+        public EmployeeDetails Delete(string FullName)
         {
             try
             {
-                var DeleteExist = this.context.Detail.Where(x => x.FullName == FullName).SingleOrDefault();
+                var DeleteExist = this.context.Detail.Where(x => x.FullName == FullName).SingleOrDefault();        //query
                 if (DeleteExist != null)
                 {
                     this.context.Detail.Remove(DeleteExist);
                     this.context.SaveChangesAsync();
-                    return "Data Deleted Successfully";
+                    return DeleteExist;           //object
                 }
-                return "Data Not Exist";
+                return null;                      // object
             }
             catch (ArgumentNullException ex)
             {
@@ -55,11 +55,11 @@ namespace EmployeeRepository.Repository
             }
         }
 
-        public string Edit(string FullName, string Gender, string Department, int Salary, int StartDate)
+        public EmployeeDetails Edit(string FullName, string Gender, string Department, int Salary, int StartDate)
         {
             try
             {
-                var EditExist =  this.context.Detail.Where(x => x.FullName == FullName).SingleOrDefault();
+                var EditExist =  this.context.Detail.Where(x => x.FullName == FullName).SingleOrDefault();     //query
                 if (EditExist != null)
                 {
                     EditExist.Salary = Salary;
@@ -68,9 +68,9 @@ namespace EmployeeRepository.Repository
 
                     this.context.Detail.Update(EditExist);
                     this.context.SaveChangesAsync();
-                    return "Data Edited Successfully";
+                    return EditExist;                    //object
                 }
-                return "Data not Exist";
+                return null;                            // object
             }
             catch (ArgumentNullException ex)
             {
