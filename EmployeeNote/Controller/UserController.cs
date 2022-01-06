@@ -21,11 +21,11 @@ namespace EmployeeNote.Controller
 
         [HttpPost]
         [Route("api/register")]
-        public IActionResult Register([FromBody] RegisterModel user)
+        public async Task<IActionResult> Register([FromBody] RegisterModel user)
         {
             try
             {
-                var message = this.manager.Register(user);
+                var message = await this.manager.Register(user);
                 if (message != null )
                 {
                     return this.Ok(new ResponseModel<string>() { Status = true, Message = "Registration is Successfull", Data = message.ToString()});
@@ -48,11 +48,11 @@ namespace EmployeeNote.Controller
 
         [HttpGet]
         [Route("api/Login")]
-        public IActionResult Login([FromBody] LoginModel loginDetails)
+        public  async Task<IActionResult> Login([FromBody] LoginModel loginDetails)
         {
             try
             {
-                var message = this.manager.Login(loginDetails);
+                var message = await this .manager.Login(loginDetails);
                 if (message.Equals(true))
                 {
                     return this.Ok(new ResponseModel<string> { Status = true, Message = "Login Successful" });
@@ -70,11 +70,11 @@ namespace EmployeeNote.Controller
 
         [HttpPut]
         [Route("api/ResetPassword")]
-        public IActionResult ResetPassword([FromBody] ResetPasswordModel reset)
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel reset)
         {
             try
             {
-                var message = this.manager.ResetPassword(reset);
+                var message = await this.manager.ResetPassword(reset);
                 if (message.Equals(true))
                 {
                     return this.Ok(new ResponseModel<string> { Status = true, Message = "Reset Successful" });
@@ -94,11 +94,11 @@ namespace EmployeeNote.Controller
 
         [HttpPost]
         [Route("forgotPassword")]
-        public IActionResult ForgetPassword(string Email)
+        public async Task<IActionResult> ForgetPassword(string Email)
         {
             try
             {
-                var message = this.manager.ForgetPassword(Email);
+                var message = await this.manager.ForgetPassword(Email);
 
 
                 if (message.Equals(true))

@@ -24,8 +24,7 @@ namespace EmployeeModels
 
 
         [Required]
-        // [RegularExpression("",ErrorMessage = "E-mail is not valid. Please Enter Valid email")]
-
+        // [RegularExpression("",ErrorMessage = "E-mail is not valid. Please Enter Valid email")
         public string Email { get; set; }
 
         [Required]

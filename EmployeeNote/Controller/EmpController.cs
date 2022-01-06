@@ -23,18 +23,18 @@ namespace EmployeeNote.Controller
 
         [HttpPost]
         [Route("api/AddEmployeeDetails")]
-        public IActionResult AddEmployeeDetails([FromBody] EmployeeDetails EmployeeDetails)
+        public async Task<IActionResult> AddEmployeeDetails([FromBody] EmployeeDetails EmployeeDetails)
         {
             try
             {
-                var message = this.manager.AddEmployeeDetails(EmployeeDetails);
+                var message = await this.manager.AddEmployeeDetails(EmployeeDetails);
                 if (message.Equals(true))
                 {
-                    return this.Ok(new ResponseModel<string> { Status = true, Message = "Employee Details Added Successfully", Data = message.ToString() });
+                    return this.Ok(new  { Status = true, Message =message , Data = message.ToString() });
                 }
                 else
                 {
-                    return this.BadRequest(new ResponseModel<string> { Status = false, Message = "Employee Details Are NOT Added" });
+                    return this.BadRequest(new  { Status = false, Message = message });
                 }
             }
             catch (Exception ex)
@@ -48,11 +48,11 @@ namespace EmployeeNote.Controller
 
         [HttpDelete]
         [Route("api/deleteData")]
-        public IActionResult Delete(int deleteData)
+        public async Task<IActionResult> Delete(int deleteData)
         {
             try
             {
-                var message = this.manager.Delete(deleteData);
+                var message = await this.manager.Delete(deleteData);
                 if (message.Equals(true))
                 {
                     return this.Ok(new ResponseModel<string> { Status = true, Message = "Data Deleted Successfully", Data = message.ToString() });
@@ -71,11 +71,11 @@ namespace EmployeeNote.Controller
 
         [HttpPut]
         [Route("api/editData")]
-        public IActionResult EditDetails(EmployeeDetails employee)
+        public async Task<IActionResult> EditDetails(EmployeeDetails employee)
         {
             try
             {
-                var message = this.manager.Edit(employee);
+                var message = await this .manager.Edit(employee);
                 if (message.Equals(true))
                 {
                     return this.Ok(new ResponseModel<string> { Status = true, Message = "Information Edited Successfully", Data= message.ToString() });
@@ -88,6 +88,28 @@ namespace EmployeeNote.Controller
             catch (Exception ex)
             {
                 return this.NotFound(new ResponseModel<string> { Status = false, Message=ex.Message });
+            }
+        }
+
+        [HttpGet]
+        [Route("getData")]
+        public IActionResult GetNotes(int getData)
+        {
+            try
+            {
+                IEnumerable<EmployeeDetails> result = this.manager.GetEmployee(getData);
+                if (result != null)
+                {
+                    return this.Ok(new { Status = true, Message = "All Employee List Successfully", Data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = "List Not Available", Data = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, ex.Message });
             }
         }
 

@@ -4,6 +4,7 @@ using System;
 using EmployeeRepository.Interface;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EmployeeManager.Manager
 {
@@ -17,34 +18,22 @@ namespace EmployeeManager.Manager
 
 
 
-        public RegisterModel Register(RegisterModel user)
+        public async Task<RegisterModel> Register(RegisterModel user)
         {
             try
             {
-                return this.repository.Register(user);
+                return await this.repository.Register(user);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string Login(LoginModel loginDetails)
+        public async Task<string> Login(LoginModel loginDetails)
         {
             try
             {
-                return this.repository.Login(loginDetails);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public string ResetPassword(ResetPasswordModel reset)
-        {
-            try
-            {
-                return this.repository.ResetPassword(reset);
+                return await this.repository.Login(loginDetails);
             }
             catch (Exception ex)
             {
@@ -52,11 +41,23 @@ namespace EmployeeManager.Manager
             }
         }
 
-        public string ForgetPassword(string Email)
+        public async Task<string> ResetPassword(ResetPasswordModel reset)
         {
             try
             {
-                return this.repository.ForgetPassword(Email);
+                return await this.repository.ResetPassword(reset);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<string> ForgetPassword(string Email)
+        {
+            try
+            {
+                return await this.repository.ForgetPassword(Email);
             }
             catch (Exception ex)
             {
