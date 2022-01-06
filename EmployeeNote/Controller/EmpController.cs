@@ -48,7 +48,7 @@ namespace EmployeeNote.Controller
 
         [HttpDelete]
         [Route("api/deleteData")]
-        public IActionResult Delete(string deleteData)
+        public IActionResult Delete(int deleteData)
         {
             try
             {
@@ -71,11 +71,11 @@ namespace EmployeeNote.Controller
 
         [HttpPut]
         [Route("api/editData")]
-        public IActionResult EditDetails(string FullName, string Gender, string Department, int Salary, int StartDate)
+        public IActionResult EditDetails(EmployeeDetails employee)
         {
             try
             {
-                var message = this.manager.Edit(FullName, Gender, Department, Salary, StartDate);
+                var message = this.manager.Edit(employee);
                 if (message.Equals(true))
                 {
                     return this.Ok(new ResponseModel<string> { Status = true, Message = "Information Edited Successfully", Data= message.ToString() });

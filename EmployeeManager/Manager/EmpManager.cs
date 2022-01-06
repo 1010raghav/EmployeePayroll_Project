@@ -29,7 +29,7 @@ namespace EmployeeManager.Manager
         }
 
 
-        public EmployeeDetails Delete(string deleteData)
+        public EmployeeDetails Delete(int deleteData)
         {
             try
             {
@@ -41,11 +41,23 @@ namespace EmployeeManager.Manager
             }
         }
 
-        public EmployeeDetails Edit(string edit, string gender, string department, int salary, int startDate)
+        public EmployeeDetails Edit(EmployeeDetails employee)
         {
             try
             {
-                return this.Emprepository.Edit(edit,gender,department,salary,startDate);
+                return this.Emprepository.Edit(employee);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public IEnumerable<EmployeeDetails> GetEmployee(int getData)
+        {
+            try
+            {
+                return this.Emprepository.Get(getData);
             }
             catch (Exception ex)
             {

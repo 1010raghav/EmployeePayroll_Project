@@ -9,11 +9,11 @@ namespace EmployeeManager.Interface
     {
         EmployeeDetails AddEmployeeDetails(EmployeeDetails employeeDetails);
 
-        EmployeeDetails Delete(string deleteData);
+        EmployeeDetails Delete(int deleteData);
 
-        EmployeeDetails Edit(string edit, string gender, string department, int salary, int startDate);
+        EmployeeDetails Edit(EmployeeDetails employee);
 
-
+        IEnumerable<EmployeeDetails> GetEmployee(int getData);
 
     }
 }

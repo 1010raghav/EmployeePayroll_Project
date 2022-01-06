@@ -20,10 +20,13 @@ namespace EmployeeRepository.Migrations
 
             modelBuilder.Entity("EmployeeModels.EmployeeDetails", b =>
                 {
-                    b.Property<string>("FullName")
+                    b.Property<string>("EmployeeID")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Department")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
@@ -35,18 +38,23 @@ namespace EmployeeRepository.Migrations
                     b.Property<int>("StartDate")
                         .HasColumnType("int");
 
-                    b.HasKey("FullName");
+                    b.HasKey("EmployeeID");
 
-                    b.ToTable("Detail");
+                    b.ToTable("Employee");
                 });
 
             modelBuilder.Entity("EmployeeModels.RegisterModel", b =>
                 {
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("UserID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
@@ -56,7 +64,7 @@ namespace EmployeeRepository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("FirstName");
+                    b.HasKey("UserID");
 
                     b.ToTable("User");
                 });

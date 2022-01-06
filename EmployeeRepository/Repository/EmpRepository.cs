@@ -21,14 +21,14 @@ namespace EmployeeRepository.Repository
         {
             try
             {
-                var ifEmployeeDetails = this.context.Detail.Where(x => x.FullName == employeeDetails.FullName).SingleOrDefault();     //query
+                var ifEmployeeDetails = this.context.Employee.Where(x => x.EmployeeID == employeeDetails.EmployeeID).SingleOrDefault();   
                 if (ifEmployeeDetails == null)
                 {
-                    this.context.Detail.Add(employeeDetails);
+                    this.context.Employee.Add(employeeDetails);
                     this.context.SaveChanges();
-                    return employeeDetails;                          //object
+                    return employeeDetails;                          
                 }
-                return null;                                         //object
+                return null;                                        
             }
             catch (ArgumentException ex)
             {
@@ -36,18 +36,18 @@ namespace EmployeeRepository.Repository
             }
         }
 
-        public EmployeeDetails Delete(string FullName)
+        public EmployeeDetails Delete(int EmployeeID)
         {
             try
             {
-                var DeleteExist = this.context.Detail.Where(x => x.FullName == FullName).SingleOrDefault();        //query
+                var DeleteExist = this.context.Employee.Where(x => x.EmployeeID == EmployeeID ).SingleOrDefault();       
                 if (DeleteExist != null)
                 {
-                    this.context.Detail.Remove(DeleteExist);
-                    this.context.SaveChangesAsync();
-                    return DeleteExist;           //object
+                    this.context.Employee.Remove(DeleteExist);
+                    this.context.SaveChanges();
+                    return DeleteExist;           
                 }
-                return null;                      // object
+                return null;                     
             }
             catch (ArgumentNullException ex)
             {
@@ -55,22 +55,40 @@ namespace EmployeeRepository.Repository
             }
         }
 
-        public EmployeeDetails Edit(string FullName, string Gender, string Department, int Salary, int StartDate)
+        public EmployeeDetails Edit(EmployeeDetails employee)
         {
             try
             {
-                var EditExist =  this.context.Detail.Where(x => x.FullName == FullName).SingleOrDefault();     //query
+                var EditExist =  this.context.Employee.Where(x => x.EmployeeID == employee.EmployeeID).SingleOrDefault();     
                 if (EditExist != null)
                 {
-                    EditExist.Salary = Salary;
-                    EditExist.StartDate = StartDate;
-                    EditExist.Department = Department;
+                    EditExist.Salary = employee.Salary;
+                    EditExist.StartDate = employee.StartDate;
+                    EditExist.Department = employee.Department;
 
-                    this.context.Detail.Update(EditExist);
-                    this.context.SaveChangesAsync();
-                    return EditExist;                    //object
+                    this.context.Employee.Update(EditExist);
+                    this.context.SaveChanges();
+                    return EditExist;                    
                 }
-                return null;                            // object
+                return null;                           
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+
+        public IEnumerable<EmployeeDetails >Get(int EmployeeID)
+        {
+            try
+            {
+                IEnumerable<EmployeeDetails>GetExist = this.context.Employee.Where(x => x.EmployeeID == EmployeeID).ToList();
+                if (GetExist.Count() != 0)
+                {
+                    return GetExist;
+                }
+                return null;
             }
             catch (ArgumentNullException ex)
             {
