@@ -9,10 +9,8 @@ namespace EmployeeManager.Interface
     public interface IUserManager
     {
         RegisterModel Register(RegisterModel user);
-        string Login(LoginModel loginDetails);
+        string Login (LoginModel loginDetails);
         string ResetPassword(ResetPasswordModel reset);
         string ForgetPassword(string Email);
-
-
     }
 }

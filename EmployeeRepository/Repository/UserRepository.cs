@@ -58,7 +58,7 @@ namespace EmployeeRepository.Repository
                 {
                     return "Login Successful";
                 }
-                return "Email not exist";
+                return "Login Unsuccessful";
             }
             catch (ArgumentNullException ex)
             {

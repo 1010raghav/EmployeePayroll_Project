@@ -17,8 +17,11 @@ namespace EmployeeNote.Controller
             this.manager = manager;
         }
 
-
-
+       /// <summary>
+       ///  Register
+       /// </summary>
+       /// <param name="user"></param>
+       /// <returns></returns>
         [HttpPost]
         [Route("api/register")]
         public IActionResult Register([FromBody] RegisterModel user)
@@ -34,7 +37,6 @@ namespace EmployeeNote.Controller
                 {
                     return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Registration is Not Successfull"});
                 }
-
             }
             catch (Exception ex)
             {
@@ -42,24 +44,20 @@ namespace EmployeeNote.Controller
             }
         }
 
-
-
-
-
         [HttpGet]
         [Route("api/Login")]
         public IActionResult Login([FromBody] LoginModel loginDetails)
         {
             try
             {
-                var message = this.manager.Login(loginDetails);
-                if (message.Equals(true))
+                string message = this.manager.Login(loginDetails);
+                if (message != "Login Unsuccessful")
                 {
-                    return this.Ok(new ResponseModel<string> { Status = true, Message = "Login Successful" });
+                    return this.Ok(new ResponseModel<string> { Status = true, Message = message});
                 }
                 else
                 {
-                    return this.BadRequest(new ResponseModel<string> { Status = false, Message = "Login Unsuccessful" });
+                    return this.BadRequest(new ResponseModel<string> { Status = false, Message = message });
                 }
             }
             catch (Exception ex)
@@ -90,8 +88,6 @@ namespace EmployeeNote.Controller
             }
         }
 
-
-
         [HttpPost]
         [Route("forgotPassword")]
         public IActionResult ForgetPassword(string Email)
@@ -118,8 +114,5 @@ namespace EmployeeNote.Controller
                 return this.NotFound(new ResponseModel<string> { Status = false, Message= ex.Message });
             }
         }
-
-
-
     }
 }
