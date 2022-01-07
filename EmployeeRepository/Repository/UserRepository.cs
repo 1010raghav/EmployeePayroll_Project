@@ -4,6 +4,7 @@ using EmployeeRepository.Interface;
 using Experimental.System.Messaging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using StackExchange.Redis;
 using System;
 using System.Linq;
 using System.Net.Mail;
@@ -19,21 +20,18 @@ namespace EmployeeRepository.Repository
 
         public UserRepository(UserContext context, IConfiguration configuration)
         {
-
             this.context = context;
             this.configuration = configuration;
         }
-
-
-        public RegisterModel Register(RegisterModel user)
+        public async Task<RegisterModel> Register(RegisterModel user)
         {
             try
             {
-                var ifExist = this.context.User.Where(x => x.Email == user.Email).SingleOrDefault();
+                var ifExist = await this.context.User.Where(x => x.Email == user.Email).SingleOrDefaultAsync();
                 if (ifExist == null)
                 {
                     this.context.User.Add(user);
-                    this.context.SaveChanges();
+                    await this.context.SaveChangesAsync();
                     return user;
 
                 }
@@ -44,18 +42,21 @@ namespace EmployeeRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-
-
-        
-
-
-        public string Login(LoginModel loginDetails)
+        public async Task<string> Login(LoginModel loginDetails)
         {
             try
             {
-                var ifLoginExist = this.context.User.Where(x => x.Email == loginDetails.Email && x.Password == loginDetails.Password).SingleOrDefault();
+                var ifLoginExist =  await this.context.User.Where(x => x.Email == loginDetails.Email && x.Password == loginDetails.Password).SingleOrDefaultAsync();
                 if (ifLoginExist != null)
                 {
+                    ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
+                    IDatabase database = connectionMultiplexer.GetDatabase();
+                    database.StringSet(key: "First Name", ifLoginExist.FirstName);
+                    database.StringSet(key: "Last Name", ifLoginExist.LastName);
+                    database.StringSet(key: "Email", ifLoginExist.Email);
+                    database.StringSet(key: "UserId", ifLoginExist.UserID.ToString());
+                    //return user != null ? "Login Successful" : "Login failed!! Email or password wrong";
+
                     return "Login Successful";
                 }
                 return "Login Unsuccessful";
@@ -72,18 +73,18 @@ namespace EmployeeRepository.Repository
             return Convert.ToBase64String(passwordBytes);
         }
 
-        public string ResetPassword(ResetPasswordModel reset)
+        public async Task<string> ResetPassword(ResetPasswordModel reset)
         {
             try
             {
-                var Reset = this.context.User.Where(x => x.Email == reset.Email).FirstOrDefault();
+                var Reset = await this.context.User.Where(x => x.Email == reset.Email).FirstOrDefaultAsync();
                 if (Reset != null)
 
                 {
                     Reset.Password = EncryptPassword(reset.NewPassword);
 
                     this.context.Update(Reset);
-                    this.context.SaveChanges();
+                    await this.context.SaveChangesAsync();
                     return "Reset Successfully";
 
                 }
@@ -95,13 +96,11 @@ namespace EmployeeRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-
-
-        public string ForgetPassword(string Email)
+        public async Task<string> ForgetPassword(string Email)
         {
             try
             {
-                var ifEmailExist = this.context.User.Where(x => x.Email == Email).SingleOrDefaultAsync();
+                var ifEmailExist = await this.context.User.Where(x => x.Email == Email).SingleOrDefaultAsync();
                 if (ifEmailExist != null)
                 {
                     MailMessage mail = new MailMessage();
@@ -126,10 +125,7 @@ namespace EmployeeRepository.Repository
             {
                 throw new Exception(ex.Message);
             }
-
-
         }
-
         private void SendMSMQ()
         {
             MessageQueue msgqueue;
@@ -146,7 +142,6 @@ namespace EmployeeRepository.Repository
             msgqueue.Label = "Mail Body";
             msgqueue.Send(body);
         }
-
         private static string RecieveMSMQ()
         {
             MessageQueue msgqueue = new MessageQueue(@".\Private$\EmployeePayroll");

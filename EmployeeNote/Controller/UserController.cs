@@ -1,13 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿//-----------------------------------------------------------------------------------------------------------------------------------------
+// <copyright file="UserController.cs" company="Bridgelabz">
+// Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <creator name="A Raghavendra Wandre"/>
+//-----------------------------------------------------------------------------------------------------------------------------------------
+using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using EmployeeModels;
 using EmployeeManager.Interface;
 
 namespace EmployeeNote.Controller
 {
+    /// <summary>
+    /// UserController class for Users API implementation
+    /// </summary>
     public class UserController : ControllerBase
     {
         private readonly IUserManager manager;
@@ -17,18 +24,18 @@ namespace EmployeeNote.Controller
             this.manager = manager;
         }
 
-       /// <summary>
-       ///  Register
-       /// </summary>
-       /// <param name="user"></param>
-       /// <returns></returns>
+        /// <summary>
+        ///  Register for new User
+        /// </summary>
+        /// <param name="user">User Data</param>
+        /// <returns>This methods returns IActionResult for User Registration</returns>
         [HttpPost]
         [Route("api/register")]
-        public IActionResult Register([FromBody] RegisterModel user)
+        public async Task<IActionResult> Register([FromBody] RegisterModel user)
         {
             try
             {
-                var message = this.manager.Register(user);
+                var message = await this.manager.Register(user);
                 if (message != null )
                 {
                     return this.Ok(new ResponseModel<string>() { Status = true, Message = "Registration is Successfull", Data = message.ToString()});
@@ -43,14 +50,18 @@ namespace EmployeeNote.Controller
                 return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
-
+        /// <summary>
+        /// Login with Registed Details
+        /// </summary>
+        /// <param name="loginDetails">User Data</param>
+        /// <returns>This methods returns IActionResult for User Login</returns>
         [HttpGet]
         [Route("api/Login")]
-        public IActionResult Login([FromBody] LoginModel loginDetails)
+        public async Task<IActionResult> Login([FromBody] LoginModel loginDetails)
         {
             try
             {
-                string message = this.manager.Login(loginDetails);
+                string message = await this.manager.Login(loginDetails);
                 if (message != "Login Unsuccessful")
                 {
                     return this.Ok(new ResponseModel<string> { Status = true, Message = message});
@@ -65,14 +76,18 @@ namespace EmployeeNote.Controller
                 return this.NotFound(new ResponseModel<string> { Status = false, Message= ex.Message });
             }
         }
-
+        /// <summary>
+        /// Reset the Pervious Password 
+        /// </summary>
+        /// <param name="reset">User Data</param>
+        /// <returns>This methods returns IActionResult for User Reset</returns>
         [HttpPut]
         [Route("api/ResetPassword")]
-        public IActionResult ResetPassword([FromBody] ResetPasswordModel reset)
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel reset)
         {
             try
             {
-                var message = this.manager.ResetPassword(reset);
+                var message = await this .manager.ResetPassword(reset);
                 if (message.Equals(true))
                 {
                     return this.Ok(new ResponseModel<string> { Status = true, Message = "Reset Successful" });
@@ -87,14 +102,18 @@ namespace EmployeeNote.Controller
                 return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
-
+        /// <summary>
+        /// Forget Retrive the Password and gives new Password to set
+        /// </summary>
+        /// <param name="Email">It is the emailId of the user where we are sending the test email</param>
+        /// <returns>This methods returns IActionResult for Forget Password</returns>
         [HttpPost]
         [Route("forgotPassword")]
-        public IActionResult ForgetPassword(string Email)
+        public async Task<IActionResult> ForgetPassword(string Email)
         {
             try
             {
-                var message = this.manager.ForgetPassword(Email);
+                var message = await this .manager.ForgetPassword(Email);
 
 
                 if (message.Equals(true))
