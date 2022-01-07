@@ -19,11 +19,9 @@ namespace EmployeeRepository.Repository
 
         public UserRepository(UserContext context, IConfiguration configuration)
         {
-
             this.context = context;
             this.configuration = configuration;
         }
-
 
         public async Task<RegisterModel> Register(RegisterModel user)
         {
@@ -35,7 +33,6 @@ namespace EmployeeRepository.Repository
                     this.context.User.Add(user);
                     await this.context.SaveChangesAsync();
                     return user;
-
                 }
                 return null;
             }
@@ -44,11 +41,6 @@ namespace EmployeeRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-
-
-        
-
-
         public async Task<string> Login(LoginModel loginDetails)
         {
             try
@@ -65,13 +57,11 @@ namespace EmployeeRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-
         public string EncryptPassword(string password)
         {
             var passwordBytes = Encoding.UTF8.GetBytes(password);
             return Convert.ToBase64String(passwordBytes);
         }
-
         public async Task<string> ResetPassword(ResetPasswordModel reset)
         {
             try
@@ -85,18 +75,14 @@ namespace EmployeeRepository.Repository
                     this.context.Update(Reset);
                     await this.context.SaveChangesAsync();
                     return "Reset Successfully";
-
                 }
                 return "Reset Unsuccessful";
             }
-
             catch (ArgumentException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-
-
         public async Task<string> ForgetPassword(string Email)
         {
             try
@@ -120,16 +106,12 @@ namespace EmployeeRepository.Repository
                     return "Reset Link Sent to Your Email Successfully";
                 }
                 return "Email not Exist";
-
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-
-
         }
-
         private void SendMSMQ()
         {
             MessageQueue msgqueue;
@@ -146,7 +128,6 @@ namespace EmployeeRepository.Repository
             msgqueue.Label = "Mail Body";
             msgqueue.Send(body);
         }
-
         private static string RecieveMSMQ()
         {
             MessageQueue msgqueue = new MessageQueue(@".\Private$\EmployeePayroll");
@@ -154,7 +135,5 @@ namespace EmployeeRepository.Repository
             recievemsg.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
             return recievemsg.Body.ToString();
         }
-
-       
     }
 }

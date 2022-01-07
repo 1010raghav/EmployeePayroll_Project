@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using EmployeeModels;
-
 
 namespace EmployeeRepository.Interface
 {
@@ -13,6 +9,7 @@ namespace EmployeeRepository.Interface
         Task<string> Login(LoginModel loginDetails);
         Task<string> ResetPassword(ResetPasswordModel reset);
         Task<string> ForgetPassword(string Email);
+  
     }
 }
 

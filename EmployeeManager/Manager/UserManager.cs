@@ -2,8 +2,6 @@
 using EmployeeModels;
 using System;
 using EmployeeRepository.Interface;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EmployeeManager.Manager
