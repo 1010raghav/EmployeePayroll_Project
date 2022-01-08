@@ -16,7 +16,6 @@ namespace EmployeeRepository.Repository
         {
             this.context = context;
         }
-
         public EmployeeDetails AddEmployeeDetails(EmployeeDetails employeeDetails)
         {
             try
@@ -77,8 +76,6 @@ namespace EmployeeRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-
-
         public IEnumerable<EmployeeDetails >Get(int EmployeeID)
         {
             try

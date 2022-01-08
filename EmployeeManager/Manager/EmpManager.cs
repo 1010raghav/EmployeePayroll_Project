@@ -14,8 +14,6 @@ namespace EmployeeManager.Manager
         {
             this.Emprepository = Emprepository;
         }
-
-
         public EmployeeDetails AddEmployeeDetails(EmployeeDetails employeeDetails)
         {
             try
@@ -27,8 +25,6 @@ namespace EmployeeManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-
-
         public EmployeeDetails Delete(int deleteData)
         {
             try
@@ -40,7 +36,6 @@ namespace EmployeeManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-
         public EmployeeDetails Edit(EmployeeDetails employee)
         {
             try
@@ -52,7 +47,6 @@ namespace EmployeeManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-
         public IEnumerable<EmployeeDetails> GetEmployee(int getData)
         {
             try

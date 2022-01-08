@@ -90,7 +90,5 @@ namespace EmployeeNote.Controller
                 return this.NotFound(new ResponseModel<string> { Status = false, Message=ex.Message });
             }
         }
-
-
     }
 }

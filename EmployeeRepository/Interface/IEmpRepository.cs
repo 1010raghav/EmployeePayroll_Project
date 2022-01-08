@@ -13,3 +13,4 @@ namespace EmployeeRepository.Interface
         IEnumerable<EmployeeDetails> Get(int getData);
     }
 }
+
