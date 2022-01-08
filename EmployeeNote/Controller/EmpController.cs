@@ -17,10 +17,11 @@ namespace EmployeeNote.Controller
         {
             this.manager = manager;
         }
-
-
-
-
+        /// <summary>
+        /// This method is used for post the employee details in the web application
+        /// </summary>
+        /// <param name="EmployeeDetails">EmployeeDetails contains the information about the employee</param>
+        /// <returns>This methods returns IActionResult for uploading Employee Details</returns>
         [HttpPost]
         [Route("api/AddEmployeeDetails")]
         public async Task<IActionResult> AddEmployeeDetails([FromBody] EmployeeDetails EmployeeDetails)
@@ -42,10 +43,11 @@ namespace EmployeeNote.Controller
                 return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
-
-        
-        
-
+        /// <summary>
+        /// This method is used for delete the employee details in the web application
+        /// </summary>
+        /// <param name="deleteData"dataDetails deletes the information about the employee</param>
+        /// <returns>This methods returns IActionResult for Delete Employee Details</returns>
         [HttpDelete]
         [Route("api/deleteData")]
         public async Task<IActionResult> Delete(int deleteData)
@@ -67,8 +69,11 @@ namespace EmployeeNote.Controller
                 return this.NotFound(new ResponseModel<string> { Status = false, Message=ex.Message });
             }
         }
-
-
+        /// <summary>
+        ///  This method is used for edit the employee details in the web application
+        /// </summary>
+        /// <param name="employee">employee edits the information about the employee </param>
+        /// <returns>This methods returns IActionResult for Edit Employee Details</returns>
         [HttpPut]
         [Route("api/editData")]
         public async Task<IActionResult> EditDetails(EmployeeDetails employee)
@@ -91,6 +96,27 @@ namespace EmployeeNote.Controller
             }
         }
 
+        [HttpGet]
+        [Route("api/GetData")]
+        public  IActionResult GetDetails(EmployeeDetails Getemployee)
+        {
+            try
+            {
+                IEnumerable<EmployeeDetails> message = this.manager.Get(Getemployee);
+                if (message.Equals(true))
+                {
+                    return this.Ok(new ResponseModel<string> { Status = true, Message = "Employee Details viewed Successfully", Data = message.ToString() });
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string> { Status = false, Message = "Cannot view Employee Details" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+            }
+        }
 
     }
 }

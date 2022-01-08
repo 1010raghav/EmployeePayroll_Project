@@ -75,11 +75,12 @@ namespace EmployeeRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public IEnumerable<EmployeeDetails> Get(int EmployeeID)
+
+        public IEnumerable<EmployeeDetails> Get(EmployeeDetails getData)
         {
             try
             {
-                IEnumerable<EmployeeDetails>GetExist = this.context.Employee.Where(x => x.EmployeeID == EmployeeID).ToList();
+                IEnumerable<EmployeeDetails> GetExist = this.context.Employee.Where(x => x.EmployeeID == getData.EmployeeID).ToList();
                 if (GetExist.Count() != 0)
                 {
                     return GetExist;

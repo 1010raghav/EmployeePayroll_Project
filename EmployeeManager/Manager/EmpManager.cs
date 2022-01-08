@@ -15,8 +15,6 @@ namespace EmployeeManager.Manager
         {
             this.Emprepository = Emprepository;
         }
-
-
         public async Task<EmployeeDetails> AddEmployeeDetails(EmployeeDetails employeeDetails)
         {
             try
@@ -28,8 +26,6 @@ namespace EmployeeManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-
-
         public async Task<EmployeeDetails> Delete(int deleteData)
         {
             try
@@ -41,7 +37,6 @@ namespace EmployeeManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-
         public async Task<EmployeeDetails> Edit(EmployeeDetails employee)
         {
             try
@@ -54,11 +49,11 @@ namespace EmployeeManager.Manager
             }
         }
 
-        public IEnumerable<EmployeeDetails> GetEmployee(int getData)
+        public IEnumerable<EmployeeDetails> Get(EmployeeDetails getemployee)
         {
             try
             {
-                return this.Emprepository.Get(getData);
+                return this.Emprepository.Get(getemployee);
             }
             catch (Exception ex)
             {
