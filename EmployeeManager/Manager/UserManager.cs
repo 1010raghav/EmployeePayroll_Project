@@ -13,9 +13,6 @@ namespace EmployeeManager.Manager
         {
             this.repository = repository;
         }
-
-
-
         public async Task<RegisterModel> Register(RegisterModel user)
         {
             try
@@ -38,7 +35,6 @@ namespace EmployeeManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-
         public async Task<string> ResetPassword(ResetPasswordModel reset)
         {
             try
@@ -50,7 +46,6 @@ namespace EmployeeManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-
         public async Task<string> ForgetPassword(string Email)
         {
             try

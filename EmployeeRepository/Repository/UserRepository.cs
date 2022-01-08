@@ -57,11 +57,6 @@ namespace EmployeeRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public string EncryptPassword(string password)
-        {
-            var passwordBytes = Encoding.UTF8.GetBytes(password);
-            return Convert.ToBase64String(passwordBytes);
-        }
         public async Task<string> ResetPassword(ResetPasswordModel reset)
         {
             try
@@ -70,7 +65,7 @@ namespace EmployeeRepository.Repository
                 if (Reset != null)
 
                 {
-                    Reset.Password = EncryptPassword(reset.NewPassword);
+                    Reset.Password = reset.NewPassword;
 
                     this.context.Update(Reset);
                     await this.context.SaveChangesAsync();

@@ -30,11 +30,11 @@ namespace EmployeeNote.Controller
                 var message = await this.manager.AddEmployeeDetails(EmployeeDetails);
                 if (message.Equals(true))
                 {
-                    return this.Ok(new  { Status = true, Message =message , Data = message.ToString() });
+                    return this.Ok(new ResponseModel<string> { Status = true, Message = "Employee Details Added Successfully", Data = message.ToString() });
                 }
                 else
                 {
-                    return this.BadRequest(new  { Status = false, Message = message });
+                    return this.BadRequest(new ResponseModel<string> { Status = false, Message = "Employee Details Are NOT Added" });
                 }
             }
             catch (Exception ex)
@@ -75,7 +75,7 @@ namespace EmployeeNote.Controller
         {
             try
             {
-                var message = await this .manager.Edit(employee);
+                var message = await this.manager.Edit(employee);
                 if (message.Equals(true))
                 {
                     return this.Ok(new ResponseModel<string> { Status = true, Message = "Information Edited Successfully", Data= message.ToString() });
@@ -88,28 +88,6 @@ namespace EmployeeNote.Controller
             catch (Exception ex)
             {
                 return this.NotFound(new ResponseModel<string> { Status = false, Message=ex.Message });
-            }
-        }
-
-        [HttpGet]
-        [Route("getData")]
-        public IActionResult GetNotes(int getData)
-        {
-            try
-            {
-                IEnumerable<EmployeeDetails> result = this.manager.GetEmployee(getData);
-                if (result != null)
-                {
-                    return this.Ok(new { Status = true, Message = "All Employee List Successfully", Data = result });
-                }
-                else
-                {
-                    return this.BadRequest(new { Status = false, Message = "List Not Available", Data = result });
-                }
-            }
-            catch (Exception ex)
-            {
-                return this.NotFound(new { Status = false, ex.Message });
             }
         }
 

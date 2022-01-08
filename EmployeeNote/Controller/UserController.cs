@@ -14,9 +14,6 @@ namespace EmployeeNote.Controller
         {
             this.manager = manager;
         }
-
-
-
         [HttpPost]
         [Route("api/register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel user)
@@ -24,26 +21,20 @@ namespace EmployeeNote.Controller
             try
             {
                 var message = await this.manager.Register(user);
-                if (message != null )
+                if (message != null)
                 {
-                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Registration is Successfull", Data = message.ToString()});
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Registration is Successfull", Data = message.ToString() });
                 }
                 else
                 {
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Registration is Not Successfull"});
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Registration is Not Successfull" });
                 }
-
             }
             catch (Exception ex)
             {
                 return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
-
-
-
-
-
         [HttpGet]
         [Route("api/Login")]
         public  async Task<IActionResult> Login([FromBody] LoginModel loginDetails)
@@ -87,9 +78,6 @@ namespace EmployeeNote.Controller
                 return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
-
-
-
         [HttpPost]
         [Route("forgotPassword")]
         public async Task<IActionResult> ForgetPassword(string Email)
@@ -116,8 +104,5 @@ namespace EmployeeNote.Controller
                 return this.NotFound(new ResponseModel<string> { Status = false, Message= ex.Message });
             }
         }
-
-
-
     }
 }

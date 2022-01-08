@@ -21,15 +21,10 @@ namespace EmployeeRepository.Repository
         public async Task<EmployeeDetails> AddEmployeeDetails(EmployeeDetails employeeDetails)
         {
             try
-            {
-                //var ifEmployeeDetails = await this.context.Employee.Where(x => x.EmployeeID == employeeDetails.EmployeeID).SingleOrDefaultAsync();   
-                //if (ifEmployeeDetails == null)
-                //{
+            { 
                     this.context.Employee.Add(employeeDetails);
                     await this.context.SaveChangesAsync();
-                    return employeeDetails;                          
-               // }
-               // return null;                                        
+                    return employeeDetails;                                                            
             }
             catch (ArgumentException ex)
             {
@@ -80,8 +75,6 @@ namespace EmployeeRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-
-
         public IEnumerable<EmployeeDetails> Get(int EmployeeID)
         {
             try
