@@ -38,16 +38,16 @@ namespace EmployeeNote.Controller
                 var message = await this.manager.Register(user);
                 if (message != null )
                 {
-                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Registration is Successfull", Data = message.ToString()});
+                    return this.Ok(new { Status = true, Message = "Registration is Successfull", Data = message});
                 }
                 else
                 {
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Registration is Not Successfull"});
+                    return this.BadRequest(new  { Status = false, Message = "Registration is Not Successfull"});
                 }
             }
             catch (Exception ex)
             {
-                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+                return this.NotFound(new  { Status = false, Message = ex.Message });
             }
         }
         /// <summary>
@@ -88,9 +88,9 @@ namespace EmployeeNote.Controller
             try
             {
                 var message = await this .manager.ResetPassword(reset);
-                if (message.Equals(true))
+                if (message != "Reset Unsuccessfully")
                 {
-                    return this.Ok(new ResponseModel<string> { Status = true, Message = "Reset Successful" });
+                    return this.Ok(new { Status = true, Message = "Reset Successfully" });
                 }
                 else
                 {
@@ -107,13 +107,13 @@ namespace EmployeeNote.Controller
         /// </summary>
         /// <param name="Email">It is the emailId of the user where we are sending the test email</param>
         /// <returns>This methods returns IActionResult for Forget Password</returns>
-        [HttpPost]
-        [Route("forgotPassword")]
+        [HttpPut]
+        [Route("api/ForgetPassword")]
         public async Task<IActionResult> ForgetPassword(string Email)
         {
             try
             {
-                var message = await this .manager.ForgetPassword(Email);
+                var message = await this.manager.ForgetPassword(Email);
 
 
                 if (message.Equals(true))

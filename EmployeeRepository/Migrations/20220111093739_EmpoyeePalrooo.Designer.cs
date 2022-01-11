@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeeRepository.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20220105180016_EmployeePayroll")]
-    partial class EmployeePayroll
+    [Migration("20220111093739_EmpoyeePalrooo")]
+    partial class EmpoyeePalrooo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,8 +22,10 @@ namespace EmployeeRepository.Migrations
 
             modelBuilder.Entity("EmployeeModels.EmployeeDetails", b =>
                 {
-                    b.Property<string>("EmployeeID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("EmployeeID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Department")
                         .HasColumnType("nvarchar(max)");
@@ -40,9 +42,14 @@ namespace EmployeeRepository.Migrations
                     b.Property<int>("StartDate")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
                     b.HasKey("EmployeeID");
 
-                    b.ToTable("Employee");
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("EmployeeModels.RegisterModel", b =>
@@ -68,7 +75,16 @@ namespace EmployeeRepository.Migrations
 
                     b.HasKey("UserID");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("EmployeeModels.EmployeeDetails", b =>
+                {
+                    b.HasOne("EmployeeModels.RegisterModel", "user")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

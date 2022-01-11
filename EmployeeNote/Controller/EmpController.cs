@@ -18,9 +18,6 @@ namespace EmployeeNote.Controller
             this.manager = manager;
         }
 
-
-
-
         [HttpPost]
         [Route("api/AddEmployeeDetails")]
         public IActionResult AddEmployeeDetails([FromBody] EmployeeDetails EmployeeDetails)
@@ -28,9 +25,9 @@ namespace EmployeeNote.Controller
             try
             {
                 var message = this.manager.AddEmployeeDetails(EmployeeDetails);
-                if (message.Equals(true))
+                if (message != null)
                 {
-                    return this.Ok(new ResponseModel<string> { Status = true, Message = "Employee Details Added Successfully", Data = message.ToString() });
+                    return this.Ok(new { Status = true, Message = "Employee Details Added Successfully", Data = message });
                 }
                 else
                 {
@@ -55,7 +52,7 @@ namespace EmployeeNote.Controller
                 var message = this.manager.Delete(deleteData);
                 if (message.Equals(true))
                 {
-                    return this.Ok(new ResponseModel<string> { Status = true, Message = "Data Deleted Successfully", Data = message.ToString() });
+                    return this.Ok(new  { Status = true, Message = "Data Deleted Successfully", Data = message });
                 }
                 else
                 {
@@ -78,7 +75,7 @@ namespace EmployeeNote.Controller
                 var message = this.manager.Edit(employee);
                 if (message.Equals(true))
                 {
-                    return this.Ok(new ResponseModel<string> { Status = true, Message = "Information Edited Successfully", Data= message.ToString() });
+                    return this.Ok(new  { Status = true, Message = "Information Edited Successfully", Data= message });
                 }
                 else
                 {

@@ -6,6 +6,7 @@ using EmployeeRepository.Context;
 using EmployeeRepository.Interface;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace EmployeeRepository.Repository
 {
@@ -16,34 +17,31 @@ namespace EmployeeRepository.Repository
         {
             this.context = context;
         }
-        public EmployeeDetails AddEmployeeDetails(EmployeeDetails employeeDetails)
+
+        public async Task<EmployeeDetails> AddEmployeeDetails(EmployeeDetails employeeDetails)
         {
+            //addind the details
             try
-            {
-                var ifEmployeeDetails = this.context.Employee.Where(x => x.EmployeeID == employeeDetails.EmployeeID).SingleOrDefault();   
-                if (ifEmployeeDetails == null)
-                {
-                    this.context.Employee.Add(employeeDetails);
-                    this.context.SaveChanges();
-                    return employeeDetails;                          
-                }
-                return null;                                        
-            }
+            { 
+                    this.context.Employees.Add(employeeDetails);
+                    await this.context.SaveChangesAsync();
+                    return employeeDetails;                                                            
+            }   
             catch (ArgumentException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
 
-        public EmployeeDetails Delete(int EmployeeID)
+        public async Task<EmployeeDetails> Delete(int EmployeeID)
         {
             try
             {
-                var DeleteExist = this.context.Employee.Where(x => x.EmployeeID == EmployeeID ).SingleOrDefault();       
+                var DeleteExist = await this.context.Employees.Where(x => x.EmployeeID == EmployeeID ).SingleOrDefaultAsync();       
                 if (DeleteExist != null)
                 {
-                    this.context.Employee.Remove(DeleteExist);
-                    this.context.SaveChanges();
+                    this.context.Employees.Remove(DeleteExist);
+                    await this.context.SaveChangesAsync();
                     return DeleteExist;           
                 }
                 return null;                     
@@ -54,19 +52,22 @@ namespace EmployeeRepository.Repository
             }
         }
 
-        public EmployeeDetails Edit(EmployeeDetails employee)
+        public async Task<EmployeeDetails> Edit(EmployeeDetails employee)
         {
             try
             {
-                var EditExist =  this.context.Employee.Where(x => x.EmployeeID == employee.EmployeeID).SingleOrDefault();     
+                // Add the employee list
+                var EditExist =  await this.context.Employees.Where(x => x.EmployeeID == employee.EmployeeID).SingleOrDefaultAsync();     
                 if (EditExist != null)
                 {
+                    EditExist.FullName = employee.FullName;
+                    EditExist.Gender = employee.Gender;
                     EditExist.Salary = employee.Salary;
                     EditExist.StartDate = employee.StartDate;
                     EditExist.Department = employee.Department;
 
-                    this.context.Employee.Update(EditExist);
-                    this.context.SaveChanges();
+                    this.context.Employees.Update(EditExist);
+                    await this.context.SaveChangesAsync();
                     return EditExist;                    
                 }
                 return null;                           
@@ -76,11 +77,12 @@ namespace EmployeeRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public IEnumerable<EmployeeDetails >Get(int EmployeeID)
+
+        public IEnumerable<EmployeeDetails> Get(EmployeeDetails getData)
         {
             try
             {
-                IEnumerable<EmployeeDetails>GetExist = this.context.Employee.Where(x => x.EmployeeID == EmployeeID).ToList();
+                IEnumerable<EmployeeDetails> GetExist = this.context.Employees.Where(x => x.EmployeeID == getData.EmployeeID).ToList();
                 if (GetExist.Count() != 0)
                 {
                     return GetExist;
