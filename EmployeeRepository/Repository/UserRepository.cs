@@ -40,7 +40,7 @@ namespace EmployeeRepository.Repository
             {
                 throw new Exception(ex.Message);
             }
-        }
+        } 
         public async Task<string> Login(LoginModel loginDetails)
         {
             try

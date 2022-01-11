@@ -8,7 +8,7 @@ namespace EmployeeRepository.Interface
        Task<RegisterModel> Register(RegisterModel user);
         Task<string> Login(LoginModel loginDetails);
         Task<string> ResetPassword(ResetPasswordModel reset);
-        Task<string> ForgetPassword(string Email);
+        Task<string> ForgetPassword(string Email); 
   
     }
 }
