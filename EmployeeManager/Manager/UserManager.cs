@@ -1,11 +1,20 @@
-﻿namespace EmployeeManager.Manager
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="UserManager.cs" company="Bridgelabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <creator name="Raghavendra Narendra Wandre"/>
+// ----------------------------------------------------------------------------------------------------------
+namespace EmployeeManager.Manager
 {
     using System;
     using System.Threading.Tasks;
     using EmployeeManager.Interface;
     using EmployeeModels;
     using EmployeeRepository.Interface;
-    
+  
+    /// <summary>
+    /// Constructor Injection
+    /// </summary>
     public class UserManager : IUserManager
     {
         readonly IUserRepository repository;
@@ -13,6 +22,12 @@
         {
             this.repository = repository;
         }
+
+        /// <summary>
+        /// Register
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public async Task<RegisterModel> Register(RegisterModel user)
         {
             try
@@ -24,6 +39,12 @@
                 throw new Exception(ex.Message);
             }
         }
+
+        /// <summary>
+        /// Login
+        /// </summary>
+        /// <param name="loginDetails"></param>
+        /// <returns></returns>
         public async Task<string> Login(LoginModel loginDetails)
         {
             try
@@ -35,6 +56,12 @@
                 throw new Exception(ex.Message);
             }
         }
+
+        /// <summary>
+        /// Reset
+        /// </summary>
+        /// <param name="reset"></param>
+        /// <returns></returns>
         public async Task<string> ResetPassword(ResetPasswordModel reset)
         {
             try
@@ -46,6 +73,12 @@
                 throw new Exception(ex.Message);
             }
         }
+
+        /// <summary>
+        /// Forget
+        /// </summary>
+        /// <param name="Email"></param>
+        /// <returns></returns>
         public async Task<string> ForgetPassword(string Email)
         {
             try

@@ -10,13 +10,13 @@ namespace EmployeeManager.Interface
     using System.Threading.Tasks;
     using EmployeeModels;
 
+    /// <summary>
+    /// Interfaces of Manager file of Employee Payroll Details 
+    /// </summary>
+    /// <param name="employeeDetails"></param>
+    /// <returns></returns>
     public interface IEmpManager
     {
-        /// <summary>
-        /// Interfaces of Manager file of Employee Payroll Details 
-        /// </summary>
-        /// <param name="employeeDetails"></param>
-        /// <returns></returns>
         Task<EmployeeDetails> AddEmployeeDetails(EmployeeDetails employeeDetails);
         Task<EmployeeDetails> Delete(int EmployeeID);
         Task<EmployeeDetails> Edit(int EmployeeID, string FullName, string Gender, int Salary, int StartDate, string Department);

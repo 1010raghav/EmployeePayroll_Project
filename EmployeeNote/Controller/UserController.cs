@@ -1,4 +1,10 @@
-﻿namespace EmployeeNote.Controller
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="UserController.cs" company="Bridgelabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <creator name="Raghavendra Narendra Wandre"/>
+// ----------------------------------------------------------------------------------------------------------
+namespace EmployeeNote.Controller
 {
     using Microsoft.AspNetCore.Mvc;
     using System;
@@ -18,6 +24,11 @@
             this.logger = logger;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("api/register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel user)
@@ -43,6 +54,12 @@
                 return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="loginDetails"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("api/Login")]
         public  async Task<IActionResult> Login([FromBody] LoginModel loginDetails)
@@ -69,6 +86,11 @@
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reset"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("api/ResetPassword")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel reset)
@@ -94,6 +116,12 @@
                 return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Email"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("api/ForgetPassword")]
         public async Task<IActionResult> ForgetPassword(string Email)
