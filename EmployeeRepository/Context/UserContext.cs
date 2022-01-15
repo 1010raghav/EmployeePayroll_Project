@@ -12,8 +12,8 @@ namespace EmployeeRepository.Context
         {
 
         }
-        public DbSet<RegisterModel> User { get; set; }
-        public DbSet<EmployeeDetails> Employee { get; set; }
+        public DbSet<RegisterModel> Users { get; set; }
+        public DbSet<EmployeeDetails> Employees { get; set; }
 
     }
 }

@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <PackageReference Include="Experimental.System.Messaging" Version="1.1.0" />
-    <PackageReference Include="UmbracoCms.Core" Version="8.17.1" />
   </ItemGroup>
 
   <ItemGroup>

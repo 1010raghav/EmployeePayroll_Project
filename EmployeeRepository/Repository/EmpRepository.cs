@@ -1,15 +1,20 @@
-﻿using EmployeeModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using EmployeeRepository.Context;
-using EmployeeRepository.Interface;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IEmployeeRepository.cs" company="Bridgelabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <creator name="Raghavendra Narendra Wandre"/>
+// ----------------------------------------------------------------------------------------------------------
 namespace EmployeeRepository.Repository
 {
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Collections.Generic;
+    using EmployeeModels;
+    using EmployeeRepository.Context;
+    using EmployeeRepository.Interface;
+    using Microsoft.EntityFrameworkCore;
+
     public class EmpRepository:IEmpRepository
     {
         private readonly UserContext context;
@@ -17,14 +22,18 @@ namespace EmployeeRepository.Repository
         {
             this.context = context;
         }
-
+        /// <summary>
+        /// Add Employee Details Method is for adding the new Employee Details 
+        /// </summary>
+        /// <param name="employeeDetails"></param>
+        /// <returns></returns>
         public async Task<EmployeeDetails> AddEmployeeDetails(EmployeeDetails employeeDetails)
         {
             try
             { 
-                    this.context.Employee.Add(employeeDetails);
-                    await this.context.SaveChangesAsync();
-                    return employeeDetails;                                                            
+                this.context.Employees.Add(employeeDetails);
+                await this.context.SaveChangesAsync();
+                return employeeDetails;                                                            
             }
             catch (ArgumentException ex)
             {
@@ -32,16 +41,21 @@ namespace EmployeeRepository.Repository
             }
         }
 
+        /// <summary>
+        /// Delete Employee Details Method is for deleting data of Employee.
+        /// </summary>
+        /// <param name="EmployeeID"></param>
+        /// <returns></returns>
         public async Task<EmployeeDetails> Delete(int EmployeeID)
         {
             try
             {
-                var DeleteExist = await this.context.Employee.Where(x => x.EmployeeID == EmployeeID ).SingleOrDefaultAsync();       
+                var DeleteExist = await this.context.Employees.Where(x => x.EmployeeID == EmployeeID ).SingleOrDefaultAsync();       
                 if (DeleteExist != null)
                 {
-                    this.context.Employee.Remove(DeleteExist);
+                    this.context.Employees.Remove(DeleteExist);
                     await this.context.SaveChangesAsync();
-                    return DeleteExist;           
+                    return DeleteExist ;           
                 }
                 return null;                     
             }
@@ -51,20 +65,29 @@ namespace EmployeeRepository.Repository
             }
         }
 
-        public async Task<EmployeeDetails> Edit(EmployeeDetails employee)
+        /// <summary>
+        /// Edit Employee Details Method is for Modifing the Existing Employee Details.
+        /// </summary>
+        /// <param name="EmployeeID"></param>
+        /// <param name="FullName"></param>
+        /// <param name="Gender"></param>
+        /// <param name="Salary"></param>
+        /// <param name="StartDate"></param>
+        /// <param name="Department"></param>
+        /// <returns></returns>
+        public async Task<EmployeeDetails> Edit(int EmployeeID, string FullName,string Gender, int Salary, int StartDate, string Department)
         {
             try
             {
-                var EditExist =  await this.context.Employee.Where(x => x.EmployeeID == employee.EmployeeID).SingleOrDefaultAsync();     
+                var EditExist =  await this.context.Employees.Where(x => x.EmployeeID == EmployeeID).SingleOrDefaultAsync();     
                 if (EditExist != null)
                 {
-                    EditExist.FullName = employee.FullName;
-                    EditExist.Gender = employee.Gender;
-                    EditExist.Salary = employee.Salary;
-                    EditExist.StartDate = employee.StartDate;
-                    EditExist.Department = employee.Department;
-
-                    this.context.Employee.Update(EditExist);
+                    EditExist.FullName = FullName;
+                    EditExist.Gender = Gender;
+                    EditExist.Salary = Salary;
+                    EditExist.StartDate = StartDate;
+                    EditExist.Department = Department;
+                    this.context.Employees.Update(EditExist);
                     await this.context.SaveChangesAsync();
                     return EditExist;                    
                 }
@@ -76,12 +99,16 @@ namespace EmployeeRepository.Repository
             }
         }
 
-        public IEnumerable<EmployeeDetails> Get(EmployeeDetails getData)
+        /// <summary>
+        /// Get method is for Displaying the all Registered Employee. 
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<EmployeeDetails> Get()
         {
             try
-            {
-                IEnumerable<EmployeeDetails> GetExist = this.context.Employee.Where(x => x.EmployeeID == getData.EmployeeID).ToList();
-                if (GetExist.Count() != 0)
+            { 
+                IEnumerable<EmployeeDetails> GetExist = this.context.Employees.ToList();
+                if (GetExist != null)
                 {
                     return GetExist;
                 }

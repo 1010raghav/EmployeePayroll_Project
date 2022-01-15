@@ -1,37 +1,45 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
-using EmployeeModels;
-using EmployeeManager.Interface;
-
-namespace EmployeeNote.Controller
+﻿namespace EmployeeNote.Controller
 {
+    using Microsoft.AspNetCore.Mvc;
+    using System;
+    using System.Threading.Tasks;
+    using EmployeeModels;
+    using EmployeeManager.Interface;
+    using Microsoft.Extensions.Logging;
+
     public class UserController : ControllerBase
     {
         private readonly IUserManager manager;
+        private readonly ILogger<UserController> logger;
 
-        public UserController(IUserManager manager)
+        public UserController(IUserManager manager,ILogger<UserController> logger)
         {
             this.manager = manager;
+            this.logger = logger;
         }
+
         [HttpPost]
         [Route("api/register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel user)
         {
             try
             {
+                this.logger.LogInformation(user.FirstName + "is trying to Register");
                 var message = await this.manager.Register(user);
                 if (message != null)
                 {
+                    this.logger.LogInformation(user.FirstName + ": Has Successfully Register");
                     return this.Ok(new ResponseModel<string>() { Status = true, Message = "Registration is Successfull", Data = message.ToString() });
                 }
                 else
                 {
+                    this.logger.LogInformation(user.FirstName + ": Registration Was Unsuccessful");
                     return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Registration is Not Successfull" });
                 }
             }
             catch (Exception ex)
             {
+                this.logger.LogInformation(user.FirstName + "had exception while registration :-");
                 return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
@@ -41,18 +49,22 @@ namespace EmployeeNote.Controller
         {
             try
             {
+                this.logger.LogInformation(loginDetails.Email + "is trying to Login");
                 var message = await this .manager.Login(loginDetails);
-                if (message.Equals(true))
+                if (message == "Login Successful")
                 {
+                    this.logger.LogInformation(loginDetails.Email + ": has Successfully Logined ");
                     return this.Ok(new ResponseModel<string> { Status = true, Message = "Login Successful" });
                 }
                 else
                 {
+                    this.logger.LogInformation(loginDetails.Email + ": has Failed to Login");
                     return this.BadRequest(new ResponseModel<string> { Status = false, Message = "Login Unsuccessful" });
                 }
             }
             catch (Exception ex)
             {
+                this.logger.LogInformation(loginDetails.Email + "had exception while Login");
                 return this.NotFound(new ResponseModel<string> { Status = false, Message= ex.Message });
             }
         }
@@ -63,44 +75,47 @@ namespace EmployeeNote.Controller
         {
             try
             {
+                this.logger.LogInformation(reset.Email + "is trying to reset");
                 var message = await this.manager.ResetPassword(reset);
-                if (message.Equals(true))
+                if (message == "Reset Successfully")
                 {
-                    return this.Ok(new ResponseModel<string> { Status = true, Message = "Reset Successful" });
+                    this.logger.LogInformation(reset.Email + ": has Successfully Reset the Password");
+                    return this.Ok(new  { Status = true, Message = "Reset Successful", Data = message.ToString() });
                 }
                 else
                 {
+                    this.logger.LogInformation(reset.Email + ": Failed to Reset the Password");
                     return this.BadRequest(new ResponseModel<string> { Status = false, Message = "Reset Unsuccessful" });
                 }
             }
             catch (Exception ex)
             {
+                this.logger.LogInformation(reset.Email + ": had exception while Reset the Password");
                 return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
         [HttpPost]
-        [Route("forgotPassword")]
+        [Route("api/ForgetPassword")]
         public async Task<IActionResult> ForgetPassword(string Email)
         {
             try
             {
+                this.logger.LogInformation(Email+ "is trying to forget");
                 var message = await this.manager.ForgetPassword(Email);
-
-
-                if (message.Equals(true))
+                if (message != null )
                 {
-
-                    return this.Ok(new ResponseModel<string> { Status = true, Message = "Reset Link Sent to Your Email Successfully" });
+                    this.logger.LogInformation(Email + " has Successfully send the link to Email");
+                    return this.Ok(new { Status = true, Message = message, data= "Successfully send the link to Email"});
                 }
                 else
                 {
-
+                    this.logger.LogInformation(Email + " Failed to send the link to Email");
                     return this.BadRequest(new ResponseModel<string> { Status = false, Message = "Error in sending the Email" });
                 }
             }
             catch (Exception ex)
             {
-
+                this.logger.LogInformation(Email + "Had Exception while sending the Email");
                 return this.NotFound(new ResponseModel<string> { Status = false, Message= ex.Message }); 
             }
         }

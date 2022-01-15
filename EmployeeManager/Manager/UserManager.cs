@@ -1,11 +1,11 @@
-﻿using EmployeeManager.Interface;
-using EmployeeModels;
-using System;
-using EmployeeRepository.Interface;
-using System.Threading.Tasks;
-
-namespace EmployeeManager.Manager
+﻿namespace EmployeeManager.Manager
 {
+    using System;
+    using System.Threading.Tasks;
+    using EmployeeManager.Interface;
+    using EmployeeModels;
+    using EmployeeRepository.Interface;
+    
     public class UserManager : IUserManager
     {
         readonly IUserRepository repository;

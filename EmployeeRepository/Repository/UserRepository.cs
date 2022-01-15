@@ -1,17 +1,17 @@
-﻿using EmployeeModels;
-using EmployeeRepository.Context;
-using EmployeeRepository.Interface;
-using Experimental.System.Messaging;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Linq;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EmployeeRepository.Repository
+﻿namespace EmployeeRepository.Repository
 {
+    using System;
+    using System.Linq;
+    using System.Net.Mail;
+    using System.Threading.Tasks;
+    using EmployeeModels;
+    using EmployeeRepository.Context;
+    using EmployeeRepository.Interface;
+    using Experimental.System.Messaging;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using StackExchange.Redis;
+
     public class UserRepository : IUserRepository
     {
         private readonly UserContext context;
@@ -27,10 +27,10 @@ namespace EmployeeRepository.Repository
         {
             try
             {
-                var ifExist = await this.context.User.Where(x => x.Email == user.Email).SingleOrDefaultAsync();
+                var ifExist = await this.context.Users.Where(x => x.Email == user.Email).SingleOrDefaultAsync();
                 if (ifExist == null)
                 {
-                    this.context.User.Add(user);
+                    this.context.Users.Add(user);
                     await this.context.SaveChangesAsync();
                     return user;
                 }
@@ -45,28 +45,37 @@ namespace EmployeeRepository.Repository
         {
             try
             {
-                var ifLoginExist = await this.context.User.Where(x => x.Email == loginDetails.Email && x.Password == loginDetails.Password).SingleOrDefaultAsync();
-                if (ifLoginExist != null)
+                var ifEmailExist = await this.context.Users.Where(x => x.Email == loginDetails.Email).SingleOrDefaultAsync();
+                if (ifEmailExist != null)
                 {
-                    return "Login Successful";
+                    var ifPasswordExist = await this.context.Users.Where(x => x.Password == loginDetails.Password).SingleOrDefaultAsync();
+                    if (ifPasswordExist != null)
+                    {
+                        ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect(this.configuration["Connections:Connection"]);
+                        IDatabase DataBase = connectionMultiplexer.GetDatabase();
+                        DataBase.StringSet(key: "First Name", ifEmailExist.FirstName);
+                        DataBase.StringSet(key: "Last Name", ifEmailExist.LastName);
+                        DataBase.StringSet(key: "Email", ifEmailExist.Email);
+                        DataBase.StringSet(key: "UserID", ifEmailExist.UserID).ToString();
+                        return "Login Successful";  //return user != null ? "Login Successful" : "Login failed!! Email or password wrong"
+                    }
+                    return "Password Not Exist";
                 }
                 return "Email not exist";
             }
-            catch (ArgumentNullException ex)
+            catch (ArgumentNullException ex)    
             {
                 throw new Exception(ex.Message);
             }
-        }
+        } 
         public async Task<string> ResetPassword(ResetPasswordModel reset)
         {
             try
             {
-                var Reset = await this.context.User.Where(x => x.Email == reset.Email).FirstOrDefaultAsync();
+                var Reset = await this.context.Users.Where(x => x.Email == reset.Email).FirstOrDefaultAsync();
                 if (Reset != null)
-
                 {
                     Reset.Password = reset.NewPassword;
-
                     this.context.Update(Reset);
                     await this.context.SaveChangesAsync();
                     return "Reset Successfully";
@@ -82,7 +91,7 @@ namespace EmployeeRepository.Repository
         {
             try
             {
-                var ifEmailExist = await this.context.User.Where(x => x.Email == Email).SingleOrDefaultAsync();
+                var ifEmailExist = await this.context.Users.Where(x => x.Email == Email ).SingleOrDefaultAsync();
                 if (ifEmailExist != null)
                 {
                     MailMessage mail = new MailMessage();

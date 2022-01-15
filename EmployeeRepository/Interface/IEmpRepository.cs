@@ -1,16 +1,24 @@
-﻿using EmployeeModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IEmployeeRepository.cs" company="Bridgelabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <creator name="Raghavendra Narendra Wandre"/>
+// ----------------------------------------------------------------------------------------------------------
 namespace EmployeeRepository.Interface
-{
+{ 
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using EmployeeModels;
     public interface IEmpRepository
     {
+        /// <summary>
+        /// Interfaces of Repository file of Employee Payroll Details 
+        /// </summary>
+        /// <param name="employeeDetails"></param>
+        /// <returns></returns>
         Task<EmployeeDetails> AddEmployeeDetails(EmployeeDetails employeeDetails);
-        Task<EmployeeDetails> Delete(int deleteData);
-        Task<EmployeeDetails> Edit(EmployeeDetails employee); 
-        IEnumerable<EmployeeDetails> Get(EmployeeDetails getData);
+        Task<EmployeeDetails> Delete(int EmployeeID);
+        Task<EmployeeDetails> Edit(int EmployeeID, string FullName, string Gender, int Salary, int StartDate, string Department); 
+        IEnumerable<EmployeeDetails> Get();
     }
 }

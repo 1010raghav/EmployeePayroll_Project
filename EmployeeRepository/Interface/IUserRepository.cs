@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using EmployeeModels;
-
-namespace EmployeeRepository.Interface
+﻿namespace EmployeeRepository.Interface
 {
+    using System.Threading.Tasks;
+    using EmployeeModels;
+
     public interface IUserRepository
     {
        Task<RegisterModel> Register(RegisterModel user);
